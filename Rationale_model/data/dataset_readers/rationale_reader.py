@@ -49,7 +49,9 @@ class RationaleReader(DatasetReader):
             evidences: List[List[Evidence]] = line.evidences
             label: str = line.classification
             query: str = line.query
-            docids: List[str] = sorted(list(set([evclause.docid for evgroup in evidences for evclause in evgroup])))
+            docids: List[str] = sorted(list(set([evclause.docid for evgroup in evidences for evclause in evgroup] + [annotation_id])))
+
+            # otherwise we end up with empty examples if evidence is empty
 
             filtered_documents: Dict[str, List[str]] = dict([(d, documents[d]) for d in docids])
             document_evidence_map = self.generate_document_evidence_map(evidences)
